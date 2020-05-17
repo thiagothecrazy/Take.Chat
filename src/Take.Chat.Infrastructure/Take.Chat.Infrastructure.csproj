@@ -6,6 +6,7 @@
     <Company>Take</Company>
     <Authors>Thiago</Authors>
     <Copyright>Copyright © Take 2020</Copyright>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
