@@ -6,18 +6,16 @@ namespace Take.Chat.Core.Interfaces
 {
     public interface ISalaServico
     {
-        Sala CriarSala(string nome);
+        Resultado<Sala> CriarSala(string nome);
 
-        bool ValidarSala(Sala sala);
+        //bool EnviarMensagem(Mensagem mensagem);
 
-        bool EnviarMensagem(Mensagem mensagem);
-
-        bool ReceberMensagem(Mensagem mensagem);
+        //bool ReceberMensagem(Mensagem mensagem);
 
 
-        bool AdicionarUsuario(Sala sala, Usuario usuario);
+        //bool AdicionarUsuario(Sala sala, Usuario usuario);
 
-        bool RemoverUsuario(Sala sala, Usuario usuario);
+        //bool RemoverUsuario(Sala sala, Usuario usuario);
 
     }
 }

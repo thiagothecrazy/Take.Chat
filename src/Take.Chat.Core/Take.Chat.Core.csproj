@@ -11,7 +11,6 @@
   <ItemGroup>
     <Compile Remove="Interfaces\IBatePapo.cs" />
     <Compile Remove="Interfaces\IMensagemServico.cs" />
-    <Compile Remove="Interfaces\ISalaServico.cs" />
   </ItemGroup>
 
 </Project>
