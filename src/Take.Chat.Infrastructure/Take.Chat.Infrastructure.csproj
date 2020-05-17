@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Product>Take Projects</Product>
+    <Company>Take</Company>
+    <Authors>Thiago</Authors>
+    <Copyright>Copyright © Take 2020</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="CrossCutting\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Take.Chat.Core\Take.Chat.Core.csproj" />
+  </ItemGroup>
+
+</Project>

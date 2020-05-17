@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Thiago</Authors>
+    <Company>Take</Company>
+    <Product>Take Projects</Product>
+    <Copyright>Copyright © Take 2020</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Take.Chat.Core\Take.Chat.Core.csproj" />
+    <ProjectReference Include="..\Take.Chat.Infrastructure\Take.Chat.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
+</Project>
