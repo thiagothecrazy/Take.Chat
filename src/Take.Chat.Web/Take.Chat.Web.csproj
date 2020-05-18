@@ -10,17 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\_\**" />
+    <Content Remove="Views\_\**" />
+    <EmbeddedResource Remove="Views\_\**" />
+    <None Remove="Views\_\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Take.Chat.Core\Take.Chat.Core.csproj" />
     <ProjectReference Include="..\Take.Chat.Infrastructure\Take.Chat.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.2.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
 
 </Project>

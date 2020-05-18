@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Take.Chat.Core.Entities;
 
 namespace Take.Chat.Core
 {
@@ -22,7 +24,7 @@ namespace Take.Chat.Core
             Notificacoes = notificacaoes;
         }
 
-        public static Resultado<T> Ok(T obj)
+        public static Resultado<T> Ok(T obj = null)
         {
             return new Resultado<T>(obj);
         }

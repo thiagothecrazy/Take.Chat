@@ -1,0 +1,17 @@
+﻿@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    <div class="msg">
+        @Model
+    </div>
+    <br/>
+}
+
+@Html.ValidationSummary()
+
+<form action="@Url.Action("Index")" method="post">
+    <input type="text" placeholder="Nome sala" name="nomeSala" value="Geral" />
+    <input type="text" placeholder="Apelido" name="apelido" />
+    <input type="submit" value="Entrar na sala" />
+</form>

@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Interfaces\IBatePapo.cs" />
     <Compile Remove="Interfaces\IMensagemServico.cs" />
   </ItemGroup>
 
