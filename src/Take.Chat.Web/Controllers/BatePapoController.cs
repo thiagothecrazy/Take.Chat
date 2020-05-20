@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using Take.Chat.Core.Interfaces;
 using Take.Chat.Web.Models;
 
@@ -15,7 +14,7 @@ namespace Take.Chat.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Entrar(string mensagem)
+        public IActionResult Index(string mensagem)
         {
             return View("Entrar", mensagem);
         }
@@ -28,11 +27,11 @@ namespace Take.Chat.Web.Controllers
             if(!resultado.Sucesso)
             {
                 var mensagemErro = string.Join(" | ", resultado.Notificacoes);
-                return Entrar(mensagemErro);
+                return Index(mensagemErro);
             }
 
-            return Entrar("Sucesso!!!");
-            //return View("Index", model);
+            model.UsuarioID = _batePapoServico.ObterUsuario(model.Apelido).ID.ToString();
+            return View("Index", model);
         }
     }
 }

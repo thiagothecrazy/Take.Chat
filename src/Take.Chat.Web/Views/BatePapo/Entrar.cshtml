@@ -1,11 +1,10 @@
 ﻿@model string
-
 @if (!string.IsNullOrEmpty(Model))
 {
     <div class="msg">
         @Model
     </div>
-    <br/>
+    <br />
 }
 
 @Html.ValidationSummary()

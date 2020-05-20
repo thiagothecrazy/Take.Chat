@@ -6,13 +6,11 @@ namespace Take.Chat.Core.Entities
 {
     public class Mensagem : EntidadeBase
     {
-        public Guid SalaID { get; set; }
+        public Usuario UsuarioOrigem { get; set; }
 
-        public Guid UsuarioOrigemID { get; set; }
+        public Usuario UsuarioDestino { get; set; }
 
-        public Guid UsuarioDestinoID { get; set; }
-
-        public bool MensagemPrivada { get; set; }
+        public bool IndicadorMensagemPrivada { get; set; }
 
         public string ConteudoMensagem { get; set; }
     }

@@ -1,16 +1,21 @@
 ﻿@model Take.Chat.Web.Models.BatePapoViewModel
 <style>
-    body {margin:0px; padding:0px;}
+
+    body {
+        margin: 0px;
+        padding: 0px;
+    }
+
     .msg {
         position: absolute;
         top: 0;
         bottom: 30px;
         border: 1px solid green;
         margin-bottom: auto;
-        display:block;
+        display: block;
         overflow: scroll;
-        width:100%;
-        white-space:nowrap;
+        width: 100%;
+        white-space: nowrap;
     }
 </style>
 <div class="msg">
@@ -18,21 +23,29 @@
 </div>
 
 <div style="position:absolute;height:20px;bottom:10px;left:0; display:block;width:100%">
-    <input type="text" style="max-width:unset;width:100%;max-width:100%" id="MessageField" placeholder="type message and press enter" />
+    <input type="text" style="max-width:unset;width:100%;max-width:100%" id="MessageField" placeholder="Digite sua mensagem e aperte ENTER" />
 </div>
 
 @section Scripts {
     <script>
     $(function () {
 
-        var apelido = '@Model.Apelido';
-        var nomeSala = '@Model.NomeSala';
-
+        var usuarioID = '@Model.UsuarioID';
+        
         var protocol = location.protocol === "https:" ? "wss:" : "ws:";
-        var wsUri = protocol + "//" + window.location.host + "/" + nomeSala;
+        var wsUri = protocol + "//" + window.location.host;
         var socket = new WebSocket(wsUri);
+
         socket.onopen = e => {
             console.log("socket opened", e);
+
+            var objMensagem = {
+                "UsuarioID": usuarioID,
+                "Mensagem": ""
+            };
+            var strMensagem = JSON.stringify(objMensagem);
+            socket.send(strMensagem);
+
         };
 
         socket.onclose = function (e) {
@@ -49,15 +62,24 @@
         };
 
         $('#MessageField').keypress(function (e) {
+
             if (e.which != 13) {
                 return;
             }
 
             e.preventDefault();
 
-            var message = apelido + ": " + $('#MessageField').val();
-            socket.send(message);
+            var objMensagem = {
+                "UsuarioID": usuarioID,
+                "Mensagem": $('#MessageField').val()
+            };
+
+            var strMensagem = JSON.stringify(objMensagem);
+
+            //var message = apelido + ": " + $('#MessageField').val();
+            socket.send(strMensagem);
             $('#MessageField').val('');
+
         });
     });
     </script>

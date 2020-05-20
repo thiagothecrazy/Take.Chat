@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
-using Take.Chat.Core.Entities;
 using Take.Chat.Core.Interfaces;
 using Take.Chat.Core.Services;
-using Take.Chat.Infrastructure;
+using Take.Chat.Infrastructure.Data;
+
 
 namespace Take.Chat
 {
@@ -35,7 +34,10 @@ namespace Take.Chat
             services.AddScoped<IUsuarioServico, UsuarioServico>();
             services.AddScoped<ISalaServico, SalaServico>();
             services.AddScoped<IBatePapoServico, BatePapoServico>();
-            services.AddSingleton(new BatePapo());
+
+            services.AddSingleton<IMensagemServico, MensagemServico>();
+            services.AddSingleton<IBatePapoRepositorio, BatePapoRepositorio>();
+            services.AddSingleton<WebSocketRepositorio>();
 
             //ContainerSetup.InitializeWeb(Assembly.GetExecutingAssembly(), services);
         }
@@ -48,7 +50,9 @@ namespace Take.Chat
             }
 
             app.UseStaticFiles();
+
             app.UseWebSockets();
+            app.UseMiddleware<CustomMiddleware>();
 
             app.UsePathBase("/Take.Chat");
             app.UseHttpsRedirection();
@@ -57,7 +61,7 @@ namespace Take.Chat
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
-                endpoints.MapControllerRoute("default", "{controller=BatePapo}/{action=Entrar}");
+                endpoints.MapControllerRoute("default", "{controller=BatePapo}/{action=Index}");
             });
         }
     }

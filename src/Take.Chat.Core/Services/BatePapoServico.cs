@@ -13,23 +13,28 @@ namespace Take.Chat.Core.Services
 
         private readonly ISalaServico _salaServico;
         private readonly IUsuarioServico _usuarioServico;
-        private readonly BatePapo _batePapo;
+        private readonly IMensagemServico _mensagemServico;
+        private readonly IBatePapoRepositorio _batePapoRepositorio;
 
-        public BatePapoServico(ISalaServico salaServico, IUsuarioServico usuarioServico, BatePapo batePapo)
+        public BatePapoServico(ISalaServico salaServico, IUsuarioServico usuarioServico, IBatePapoRepositorio batePapoRepositorio, IMensagemServico mensagemServico)
         {
             _salaServico = salaServico;
             _usuarioServico = usuarioServico;
-            _batePapo = batePapo;
+            _batePapoRepositorio = batePapoRepositorio;
+            _mensagemServico = mensagemServico;
         }
 
         private void AdicionarSala(Sala sala)
         {
-            _batePapo.Salas.TryAdd(sala.ID.ToString(), sala);
+            _batePapoRepositorio.AdicionarSala(sala);
         }
 
-        private Sala ObterOuAdicionarSala(string nome)
+        private Sala ObterOuCriarSala(string nome)
         {
-            var sala = _batePapo.Salas.FirstOrDefault(d => d.Value.Nome == nome).Value;
+            //Recuperar sala pelo nome
+            var sala = _batePapoRepositorio.ObterSalaPeloNome(nome);
+
+            //Se a sala não existir, criar uma nova
             if (sala == null)
             {
                 var salaResultado = _salaServico.CriarSala(nome);
@@ -44,9 +49,9 @@ namespace Take.Chat.Core.Services
             return sala;
         }
 
-        private Usuario ObterUsuario(string apelido)
+        public Usuario ObterUsuario(string apelido)
         {
-            var usuario = _batePapo.Salas.SelectMany(d => d.Value.Usuarios).FirstOrDefault(d => d.Apelido == apelido);
+            var usuario = _batePapoRepositorio.ObterUsuarioPeloApelido(apelido);
 
             if (usuario == null)
             {
@@ -65,12 +70,12 @@ namespace Take.Chat.Core.Services
 
         private void AdicionarUsuarioSala(Usuario usuario, Sala sala)
         {
-            _batePapo.Salas.First(d => d.Value.ID == sala.ID).Value.Usuarios.Add(usuario);
+            _batePapoRepositorio.AdicionarUsuarioSala(usuario, sala);
         }
 
         public Resultado<BatePapo> AdicionarUsuarioSala(string apelido, string nomeSala)
         {
-            var sala = ObterOuAdicionarSala(nomeSala);
+            var sala = ObterOuCriarSala(nomeSala);
             var usuario = ObterUsuario(apelido);
 
             //Verificar Notificações
@@ -80,9 +85,125 @@ namespace Take.Chat.Core.Services
             AdicionarSala(sala);
             AdicionarUsuarioSala(usuario, sala);
 
-            return Resultado<BatePapo>.Ok(_batePapo);
+            var batePapo = _batePapoRepositorio.ObterBatePapo();
+            return Resultado<BatePapo>.Ok(batePapo);
 
         }
+
+        //------------------------------
+
+        public void Ajuda(Usuario usuario)
+        {
+            var mensagens = _mensagemServico.ListarMensagemInstrucoes(usuario);
+            EnviarMensagem(mensagens);
+        }
+
+        public void EntrarSala(string usuarioID)
+        {
+            var usuario = _batePapoRepositorio.ObterUsuarioPeloID(usuarioID);
+            var sala = _batePapoRepositorio.ObterSalaPeloUsuario(usuario);
+
+            var mensagens = _mensagemServico.ListarMensagemEntrarSala(usuario, sala);
+            EnviarMensagem(mensagens);
+        }
+
+        public void SairSala(Usuario usuario)
+        {
+            var sala = _batePapoRepositorio.ObterSalaPeloUsuario(usuario);
+
+            var mensagens = _mensagemServico.ListarMensagemSairSala(usuario, sala);
+            EnviarMensagem(mensagens);
+
+            //REMOVER USUÁRIOS
+            _batePapoRepositorio.RemoverUsuarioSala(usuario);
+
+        }
+
+        //------------------------------
+
+        private bool ProcessarMensagemComando(Usuario usuarioOrigem, string mensagem)
+        {
+            var possuiComando = _mensagemServico.PossuiComando(mensagem);
+
+            if (possuiComando)
+            {
+                if (_mensagemServico.PossuiComandoSair(mensagem))
+                    SairSala(usuarioOrigem);
+                else if (_mensagemServico.PossuiComandoAjuda(mensagem))
+                    Ajuda(usuarioOrigem);
+            }
+
+            return possuiComando;
+        }
+
+        private bool ProcessarMensagemParaUsuario(Usuario usuarioOrigem, string mensagem)
+        {
+            var possuiUsuarioDestino = _mensagemServico.PossuiUsuarioDestino(mensagem);
+
+            if (possuiUsuarioDestino)
+            {
+                var apelidoUsuarioDestino = _mensagemServico.ObterApelidoUsuarioDestino(mensagem);
+                var usuarioDestino = _batePapoRepositorio.ObterUsuarioPeloApelido(apelidoUsuarioDestino);
+
+                if (usuarioDestino == null)
+                    return false;
+
+                var mensagens = _mensagemServico.ListarMensagemParaUsuario(usuarioOrigem, usuarioDestino, mensagem);
+                EnviarMensagem(mensagens);
+            }
+
+            return possuiUsuarioDestino;
+        }
+
+        private void ProcessarMensagemParaTodos(Usuario usuarioOrigem, string mensagem)
+        {
+            var mensagens = _mensagemServico.ListarMensagemParaTodos(usuarioOrigem, mensagem);
+            EnviarMensagem(mensagens);
+        }
+
+        public void ProcessarMensagem(string usuarioID, string mensagem)
+        {
+            var conteudoMensagem = mensagem.Trim();
+            var usuarioOrigem = _batePapoRepositorio.ObterUsuarioPeloID(usuarioID);
+
+            if (ProcessarMensagemComando(usuarioOrigem, conteudoMensagem))
+                return;
+
+            if (ProcessarMensagemParaUsuario(usuarioOrigem, conteudoMensagem))
+                return;
+
+            ProcessarMensagemParaTodos(usuarioOrigem, conteudoMensagem);
+        }
+
+        //---------------------------
+
+        private void EnviarMensagem(IEnumerable<Mensagem> mensagens)
+        {
+            foreach (var mensagem in mensagens)
+                EnviarMensagem(mensagem);
+        }
+
+        private void EnviarMensagem(Mensagem mensagem)
+        {
+            if (mensagem.UsuarioDestino == null)
+                EnviarMensagemTodos(mensagem);
+            else
+                EnviarMensagemUsuario(mensagem);
+        }
+
+        private void EnviarMensagemUsuario(Mensagem mensagem)
+        {
+            _batePapoRepositorio.EnviarMensagemAsync(mensagem.UsuarioDestino, mensagem.ConteudoMensagem);
+        }
+
+        private void EnviarMensagemTodos(Mensagem mensagem)
+        {
+            var sala = _batePapoRepositorio.ObterSalaPeloUsuario(mensagem.UsuarioOrigem);
+
+            foreach (var usuarioDestino in sala.Usuarios.Where(d => d.ID != mensagem.UsuarioOrigem.ID))
+                _batePapoRepositorio.EnviarMensagemAsync(usuarioDestino, mensagem.ConteudoMensagem);
+        }
+
 
     }
 }

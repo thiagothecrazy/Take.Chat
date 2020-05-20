@@ -8,8 +8,4 @@
     <Copyright>Copyright © Take 2020</Copyright>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Interfaces\IMensagemServico.cs" />
-  </ItemGroup>
-
 </Project>
