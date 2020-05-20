@@ -6,7 +6,15 @@
     <Company>Take</Company>
     <Product>Take Projects</Product>
     <Copyright>Copyright © Take 2020</Copyright>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\_\**" />
+    <Content Remove="Views\_\**" />
+    <EmbeddedResource Remove="Views\_\**" />
+    <None Remove="Views\_\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Take.Chat.Core\Take.Chat.Core.csproj" />
@@ -14,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Views\" />
+    <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.2.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
 
 </Project>
