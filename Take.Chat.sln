@@ -7,17 +7,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Take.Chat.Core", "src\Take.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Take.Chat.Web", "src\Take.Chat.Web\Take.Chat.Web.csproj", "{9BC471A7-E1DC-43C2-87CC-DDF4F8FD5121}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Take.Chat.Infrastructure", "src\Take.Chat.Infrastructure\Take.Chat.Infrastructure.csproj", "{F786270F-8CE8-4EBE-ACB8-5A57B2DAD642}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Take.Chat.Infrastructure", "src\Take.Chat.Infrastructure\Take.Chat.Infrastructure.csproj", "{F786270F-8CE8-4EBE-ACB8-5A57B2DAD642}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8B345330-85EE-492F-9AC6-3BE7E606A50A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FC905445-2B06-4525-A04D-5ED7AAD527AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Take.Chat.UnitTests", "tests\Take.Chat.UnitTests\Take.Chat.UnitTests.csproj", "{71CDD7C4-96C8-441F-A609-55C56C0E82A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Take.Chat.UnitTests", "tests\Take.Chat.UnitTests\Take.Chat.UnitTests.csproj", "{71CDD7C4-96C8-441F-A609-55C56C0E82A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Take.Chat.IntegrationTests", "tests\Take.Chat.IntegrationTests\Take.Chat.IntegrationTests.csproj", "{C26173E3-8A48-476B-8245-2BAC2D1A6D60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Take.Chat.IntegrationTests", "tests\Take.Chat.IntegrationTests\Take.Chat.IntegrationTests.csproj", "{C26173E3-8A48-476B-8245-2BAC2D1A6D60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Take.Chat.FunctionalTests", "tests\Take.Chat.FunctionalTests\Take.Chat.FunctionalTests\Take.Chat.FunctionalTests.csproj", "{469785EF-8537-495B-9B25-88F937D5A43C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Take.Chat.FunctionalTests", "tests\Take.Chat.FunctionalTests\Take.Chat.FunctionalTests\Take.Chat.FunctionalTests.csproj", "{469785EF-8537-495B-9B25-88F937D5A43C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6A4E8819-9198-43FB-A803-3659D5BF5963}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
