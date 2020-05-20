@@ -37,7 +37,7 @@ namespace Take.Chat
 
             services.AddSingleton<IMensagemServico, MensagemServico>();
             services.AddSingleton<IBatePapoRepositorio, BatePapoRepositorio>();
-            services.AddSingleton<WebSocketRepositorio>();
+            services.AddSingleton<IWebSocketRepositorio, WebSocketRepositorio>();
 
             //ContainerSetup.InitializeWeb(Assembly.GetExecutingAssembly(), services);
         }

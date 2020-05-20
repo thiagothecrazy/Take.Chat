@@ -92,22 +92,24 @@ namespace Take.Chat.Core.Services
 
         //------------------------------
 
-        public void Ajuda(Usuario usuario)
-        {
-            var mensagens = _mensagemServico.ListarMensagemInstrucoes(usuario);
-            EnviarMensagem(mensagens);
-        }
-
-        public void EntrarSala(string usuarioID)
+        public bool EntrarSala(string usuarioID)
         {
             var usuario = _batePapoRepositorio.ObterUsuarioPeloID(usuarioID);
             var sala = _batePapoRepositorio.ObterSalaPeloUsuario(usuario);
 
             var mensagens = _mensagemServico.ListarMensagemEntrarSala(usuario, sala);
             EnviarMensagem(mensagens);
+
+            return true;
         }
 
-        public void SairSala(Usuario usuario)
+        private void Ajuda(Usuario usuario)
+        {
+            var mensagens = _mensagemServico.ListarMensagemInstrucoes(usuario);
+            EnviarMensagem(mensagens);
+        }
+
+        private void SairSala(Usuario usuario)
         {
             var sala = _batePapoRepositorio.ObterSalaPeloUsuario(usuario);
 
@@ -161,18 +163,19 @@ namespace Take.Chat.Core.Services
             EnviarMensagem(mensagens);
         }
 
-        public void ProcessarMensagem(string usuarioID, string mensagem)
+        public bool ProcessarMensagem(string usuarioID, string mensagem)
         {
             var conteudoMensagem = mensagem.Trim();
             var usuarioOrigem = _batePapoRepositorio.ObterUsuarioPeloID(usuarioID);
 
             if (ProcessarMensagemComando(usuarioOrigem, conteudoMensagem))
-                return;
+                return true;
 
             if (ProcessarMensagemParaUsuario(usuarioOrigem, conteudoMensagem))
-                return;
+                return true;
 
             ProcessarMensagemParaTodos(usuarioOrigem, conteudoMensagem);
+            return true;
         }
 
         //---------------------------

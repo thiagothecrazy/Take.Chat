@@ -11,7 +11,7 @@ namespace Take.Chat.Infrastructure.Data
     public class CustomMiddleware
     {
         private readonly RequestDelegate _next;
-        private WebSocketRepositorio _webSocketRepositorio;
+        private IWebSocketRepositorio _webSocketRepositorio;
         private IBatePapoServico _batePapoServico;
 
         public CustomMiddleware(RequestDelegate next)
@@ -20,7 +20,7 @@ namespace Take.Chat.Infrastructure.Data
             
         }
 
-        public async Task Invoke(HttpContext context, WebSocketRepositorio webSocketRepositorio, IBatePapoServico batePapoServico)
+        public async Task Invoke(HttpContext context, IWebSocketRepositorio webSocketRepositorio, IBatePapoServico batePapoServico)
         {
             _webSocketRepositorio = webSocketRepositorio;
             _batePapoServico = batePapoServico;

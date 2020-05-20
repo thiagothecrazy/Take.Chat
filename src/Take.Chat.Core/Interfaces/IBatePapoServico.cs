@@ -8,8 +8,8 @@ namespace Take.Chat.Core.Interfaces
 
         Usuario ObterUsuario(string apelido);
 
-        void EntrarSala(string usuarioID);
+        bool EntrarSala(string usuarioID);
 
-        void ProcessarMensagem(string usuarioID, string mensagem);
+        bool ProcessarMensagem(string usuarioID, string mensagem);
     }
 }

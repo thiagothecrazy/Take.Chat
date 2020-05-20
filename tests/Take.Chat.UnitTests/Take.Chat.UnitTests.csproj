@@ -18,11 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\Entities\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Take.Chat.Core\Take.Chat.Core.csproj" />
+    <ProjectReference Include="..\..\src\Take.Chat.Infrastructure\Take.Chat.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

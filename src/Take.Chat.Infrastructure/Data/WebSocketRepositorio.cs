@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Take.Chat.Infrastructure.Data
 {
-    public class WebSocketRepositorio
+    public class WebSocketRepositorio : IWebSocketRepositorio
     {
         private readonly ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();
 

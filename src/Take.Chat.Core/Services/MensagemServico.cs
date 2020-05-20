@@ -18,7 +18,7 @@ namespace Take.Chat.Core.Services
 
         private string NormalizarConteudoMensagemPrivada(string mensagem)
         {
-            if (PossuiComandoMensagemPrivada(mensagem))
+            if (PossuiIndicadorMensagemPrivada(mensagem))
                 return mensagem.Remove(0, 2).Trim();
             return mensagem;
         }
@@ -84,7 +84,7 @@ namespace Take.Chat.Core.Services
 
         public IEnumerable<Mensagem> ListarMensagemParaUsuario(Usuario usuarioOrigem, Usuario usuarioDestino, string mensagem)
         {
-            var indicadorMensagemPrivada = PossuiComandoMensagemPrivada(mensagem);
+            var indicadorMensagemPrivada = PossuiIndicadorMensagemPrivada(mensagem);
 
             var mensagens = new List<Mensagem>();
 
@@ -97,21 +97,17 @@ namespace Take.Chat.Core.Services
             };
             mensagemUsarioParaUsuario = ObterMensagemFormatada(mensagemUsarioParaUsuario);
 
-            if (indicadorMensagemPrivada)
+            var mensagemSistemaParaUsario = new Mensagem
             {
-                var mensagemSistemaParaUsario = new Mensagem
-                {
-                    UsuarioOrigem = usuarioOrigem,
-                    UsuarioDestino = usuarioOrigem,
-                    IndicadorMensagemPrivada = indicadorMensagemPrivada,
-                    ConteudoMensagem = mensagemUsarioParaUsuario.ConteudoMensagem
-                };
-                mensagens.Add(mensagemSistemaParaUsario);
-            }
-            else
-            {
+                UsuarioOrigem = usuarioOrigem,
+                UsuarioDestino = usuarioOrigem,
+                IndicadorMensagemPrivada = indicadorMensagemPrivada,
+                ConteudoMensagem = mensagemUsarioParaUsuario.ConteudoMensagem
+            };
+            mensagens.Add(mensagemSistemaParaUsario);
+
+            if (!indicadorMensagemPrivada)
                 mensagemUsarioParaUsuario.UsuarioDestino = null;
-            }
 
             mensagens.Add(mensagemUsarioParaUsuario);
 
@@ -134,7 +130,7 @@ namespace Take.Chat.Core.Services
             {
                 UsuarioOrigem = usuario,
                 UsuarioDestino = null,
-                ConteudoMensagem = $"'{usuario.Apelido}' entrou na sala #{sala.Nome}."
+                ConteudoMensagem = $"'{usuario.Apelido}' entrou na sala #{sala.Nome}"
             };
 
             mensagens.Add(mensagemSistemaParaUsario);
@@ -183,7 +179,7 @@ namespace Take.Chat.Core.Services
             {
                 UsuarioOrigem = usuario,
                 UsuarioDestino = null,
-                ConteudoMensagem = $"'{usuario.Apelido}' saiu da sala #{sala.Nome}."
+                ConteudoMensagem = $"'{usuario.Apelido}' saiu da sala #{sala.Nome}"
             };
 
             mensagens.Add(mensagemSistemaParaUsario);
@@ -214,7 +210,7 @@ namespace Take.Chat.Core.Services
             return mensagem.StartsWith("/p @") || mensagem.StartsWith("@");
         }
 
-        public bool PossuiComandoMensagemPrivada(string mensagem)
+        private bool PossuiIndicadorMensagemPrivada(string mensagem)
         {
             return mensagem.StartsWith("/p");
         }

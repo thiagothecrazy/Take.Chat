@@ -13,9 +13,9 @@ namespace Take.Chat.Infrastructure.Data
         private readonly Guid _batePapoID = Guid.NewGuid();
         private readonly ConcurrentDictionary<string, Sala> _repositorio = new ConcurrentDictionary<string, Sala>();
 
-        private readonly WebSocketRepositorio _webSocketRepositorio;
+        private readonly IWebSocketRepositorio _webSocketRepositorio;
 
-        public BatePapoRepositorio(WebSocketRepositorio webSocketRepositorio)
+        public BatePapoRepositorio(IWebSocketRepositorio webSocketRepositorio)
         {
             _webSocketRepositorio = webSocketRepositorio;
         }
